@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Flags</title>
+    <style>
+        /* Define styles for the dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 100px;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        .error {
+            color: red;
+        }
+        #editor {
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 200px;
+        }
+        .toolbar {
+            margin-bottom: 10px;
+        }
+        .toolbar button {
+            margin-right: 5px;
+        }
+
+
+.color-box {
+    width: 200px;
+    height: 200px;
+    background-color: red;
+    animation: colorChange 5s infinite;
+}
+
+@keyframes colorChange {
+    0% { background-color: red; }
+    25% { background-color: yellow; }
+    50% { background-color: green; }
+    75% { background-color: blue; }
+    100% { background-color: red; }
+}
+    </style>
+</head>
+<body>
+
+    <div class="dropdown" id="countryDropdown">
+        <button onclick="toggleDropdown()">Select Country</button>
+        <div class="dropdown-content" id="countryOptions">
+            <a href="#" onclick="selectCountry('USA')">USA</a>
+            <a href="#" onclick="selectCountry('UK')">UK</a>
+            <a href="#" onclick="selectCountry('France')">France</a>
+            <!-- Add more country options here -->
+        </div>
+    </div>
+<hr>
+    <img src="" id="flagImage" alt="Flag" style="display: none;">
+
+    <form id="passwordForm">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword"><br><br>
+        <input type="submit" value="Submit">
+        <div id="message" class="error"></div>
+    </form>
+    
+    <script>
+        document.getElementById('passwordForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            let password = document.getElementById('password').value;
+            let confirmPassword = document.getElementById('confirmPassword').value;
+            let message = document.getElementById('message');
+            
+            message.textContent = '';
+            
+            if (password.length < 8) {
+                message.textContent = 'Password is too short. It should be at least 8 characters long.';
+            } else if (password !== confirmPassword) {
+                message.textContent = 'Passwords do not match.';
+            } else {
+                message.textContent = 'Password is valid.';
+                message.style.color = 'green';
+            }
+        });
+    </script>
+    <hr>
+    <div class="toolbar">
+        <button onclick="execCmd('bold')">Bold</button>
+        <button onclick="execCmd('underline')">Underline</button>
+        <button onclick="execCmd('italic')">Italic</button>
+        <select onchange="execCmdWithArg('fontName', this.value)">
+            <option value="Arial">Arial</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Verdana">Verdana</option>
+        </select>
+        <select onchange="execCmdWithArg('fontSize', this.value)">
+            <option value="1">10px</option>
+            <option value="2">13px</option>
+            <option value="3">16px</option>
+            <option value="4">18px</option>
+            <option value="5">24px</option>
+            <option value="6">32px</option>
+            <option value="7">48px</option>
+        </select>
+    </div>
+    <div id="editor" contenteditable="true">
+        Type your text here...
+    </div>
+
+    <script>
+        function execCmd(command) {
+            document.execCommand(command, false, null);
+        }
+
+        function execCmdWithArg(command, arg) {
+            document.execCommand(command, false, arg);
+        }
+    </script>
+    <hr>
+    <div class="color-box"></div>
+    <label for="animation-duration">Animation Duration (seconds):</label>
+    <input type="number" id="animation-duration" min="1" value="5">
+    <button onclick="updateAnimationDuration()">Update Duration</button>
+<script>
+function updateAnimationDuration() {
+    const durationInput = document.getElementById('animation-duration');
+    const duration = durationInput.value;
+    const colorBox = document.querySelector('.color-box');
+    
+    colorBox.style.animationDuration = `${duration}s`;
+}</script>
+</body>
+</html>
